@@ -1,0 +1,238 @@
+import java.util.*;
+
+// Player Class
+class Player {
+    private String name;
+    private int points;
+    private int matches;
+
+    public Player(String name) {
+        this.name = name;
+        this.points = 0;
+        this.matches = 0;
+    }
+
+    public void addPoints(int pts) {
+        points += pts;
+        matches++;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+}
+
+// Team Class
+class Team {
+    private String name;
+    private ArrayList<Player> players;
+    private int wins;
+
+    public Team(String name) {
+        this.name = name;
+        players = new ArrayList<>();
+        wins = 0;
+    }
+
+    public void addPlayer(String playerName) {
+        players.add(new Player(playerName));
+    }
+
+    public Player findPlayer(String name) {
+        for (Player p : players) {
+            if (p.getName().equalsIgnoreCase(name)) return p;
+        }
+        return null;
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void addWin() {
+        wins++;
+    }
+
+    public int getWins() {
+        return wins;
+    }
+}
+
+// Match Class
+class Match {
+    private Team t1, t2;
+    private int s1, s2;
+
+    public Match(Team t1, Team t2) {
+        this.t1 = t1;
+        this.t2 = t2;
+    }
+
+    public void playMatch(Scanner sc) {
+        System.out.println("Enter score for " + t1.getName());
+        s1 = sc.nextInt();
+
+        System.out.println("Enter score for " + t2.getName());
+        s2 = sc.nextInt();
+
+        if (s1 > s2) t1.addWin();
+        else if (s2 > s1) t2.addWin();
+
+        // Add player stats
+        System.out.println("Enter player name from " + t1.getName());
+        sc.nextLine();
+        String p1 = sc.nextLine();
+        Player player1 = t1.findPlayer(p1);
+
+        if (player1 != null) {
+            System.out.println("Enter points scored:");
+            int pts = sc.nextInt();
+            player1.addPoints(pts);
+        }
+
+        System.out.println("Enter player name from " + t2.getName());
+        sc.nextLine();
+        String p2 = sc.nextLine();
+        Player player2 = t2.findPlayer(p2);
+
+        if (player2 != null) {
+            System.out.println("Enter points scored:");
+            int pts = sc.nextInt();
+            player2.addPoints(pts);
+        }
+    }
+
+    public String getResult() {
+        return t1.getName() + " " + s1 + " - " + s2 + " " + t2.getName();
+    }
+}
+
+// Tournament Manager
+class TournamentManager {
+    private ArrayList<Team> teams = new ArrayList<>();
+    private ArrayList<Match> matches = new ArrayList<>();
+
+    public void addTeam(String name) {
+        teams.add(new Team(name));
+        System.out.println("Team added!");
+    }
+
+    public Team findTeam(String name) {
+        for (Team t : teams) {
+            if (t.getName().equalsIgnoreCase(name)) return t;
+        }
+        return null;
+    }
+
+    public void addPlayer(String teamName, String playerName) {
+        Team t = findTeam(teamName);
+        if (t != null) {
+            t.addPlayer(playerName);
+            System.out.println("Player added!");
+        } else {
+            System.out.println("Team not found!");
+        }
+    }
+
+    public void playMatch(String t1, String t2, Scanner sc) {
+        Team team1 = findTeam(t1);
+        Team team2 = findTeam(t2);
+
+        if (team1 != null && team2 != null) {
+            Match m = new Match(team1, team2);
+            m.playMatch(sc);
+            matches.add(m);
+            System.out.println("Match Played: " + m.getResult());
+        } else {
+            System.out.println("Team not found!");
+        }
+    }
+
+    public void showLeaderboard() {
+        teams.sort((a, b) -> b.getWins() - a.getWins());
+
+        System.out.println("\n--- Leaderboard ---");
+        for (Team t : teams) {
+            System.out.println(t.getName() + " | Wins: " + t.getWins());
+        }
+    }
+
+    public void showTopScorer() {
+        Player top = null;
+
+        for (Team t : teams) {
+            for (Player p : t.getPlayers()) {
+                if (top == null || p.getPoints() > top.getPoints()) {
+                    top = p;
+                }
+            }
+        }
+
+        if (top != null) {
+            System.out.println("Top Scorer: " + top.getName() + " | Points: " + top.getPoints());
+        }
+    }
+}
+
+// Main Class
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        TournamentManager tm = new TournamentManager();
+
+        while (true) {
+            System.out.println("\n===== MENU =====");
+            System.out.println("1. Add Team");
+            System.out.println("2. Add Player");
+            System.out.println("3. Play Match");
+            System.out.println("4. Leaderboard");
+            System.out.println("5. Top Scorer");
+            System.out.println("6. Exit");
+
+            int ch = sc.nextInt();
+            sc.nextLine();
+
+            switch (ch) {
+                case 1:
+                    System.out.print("Team name: ");
+                    tm.addTeam(sc.nextLine());
+                    break;
+
+                case 2:
+                    System.out.print("Team name: ");
+                    String t = sc.nextLine();
+                    System.out.print("Player name: ");
+                    String p = sc.nextLine();
+                    tm.addPlayer(t, p);
+                    break;
+
+                case 3:
+                    System.out.print("Team 1: ");
+                    String t1 = sc.nextLine();
+                    System.out.print("Team 2: ");
+                    String t2 = sc.nextLine();
+                    tm.playMatch(t1, t2, sc);
+                    break;
+
+                case 4:
+                    tm.showLeaderboard();
+                    break;
+
+                case 5:
+                    tm.showTopScorer();
+                    break;
+
+                case 6:
+                    System.exit(0);
+            }
+        }
+    }
+}
