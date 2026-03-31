@@ -1,0 +1,15 @@
+🧭 Project Manifesto – Smart Tournament Manager
+
+The Smart Tournament Manager is built on the belief that managing sports tournaments should be simple, efficient, and accessible to everyone. In many colleges and local communities, tournaments are still handled using manual methods that are time-consuming, error-prone, and difficult to manage. This project exists to challenge that approach and provide a smarter, more reliable alternative.
+
+We believe in automation over repetition, reducing manual effort by leveraging technology to handle scheduling, scoring, and data management. By doing so, we aim to eliminate common issues such as data loss, incorrect records, and inefficient communication.
+
+We are committed to clarity and structure through the use of Object-Oriented Programming principles. Clean code, modular design, and logical organization are at the core of this project, ensuring that the system is easy to understand, maintain, and extend.
+
+This project also stands for learning through building. It is not just a solution but a practical demonstration of Java concepts such as OOP, collections, file handling, and exception management. It reflects the idea that real-world problems are the best way to strengthen programming skills.
+
+We value simplicity and accessibility, which is why the application is designed to be menu-driven and easy to use, even for users with minimal technical knowledge. Technology should empower users, not complicate their tasks.
+
+Finally, the Smart Tournament Manager is built with a vision for the future. It is a foundation that can evolve into a more advanced system with graphical interfaces, databases, and analytics.
+
+This project represents efficiency, reliability, and continuous improvement in tournament management.
